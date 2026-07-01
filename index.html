@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Save the Date — The Anticipation Game</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- HOME -->
+  <section id="screen-home" class="screen active">
+    <div class="card wide">
+      <h1>Save&nbsp;the&nbsp;Date</h1>
+      <p class="tagline">The Anticipation Game — a systems-thinking game about acting under uncertainty.</p>
+      <p class="blurb">
+        You govern a town facing an approaching crisis. Early on you can act freely but you barely know
+        what's coming. As the crisis nears, the forecast sharpens — but your power to act drains away.
+        Act too early and you may waste resources on a false alarm; act too late and it's already here.
+      </p>
+
+      <div class="split">
+        <div class="pane">
+          <h2>Start a new game</h2>
+          <label>Your name</label>
+          <input id="createName" type="text" placeholder="e.g. Mayor Ada" maxlength="24" />
+          <button class="primary" onclick="SD.createGame()">Create game</button>
+          <p class="hint">You'll get a room code to share. The game runs itself — no human facilitator.</p>
+        </div>
+        <div class="divider"><span>or</span></div>
+        <div class="pane">
+          <h2>Join a game</h2>
+          <label>Your name</label>
+          <input id="joinName" type="text" placeholder="e.g. Councillor Bo" maxlength="24" />
+          <label>Room code</label>
+          <input id="joinRoom" type="text" placeholder="e.g. K7Q2" maxlength="6" style="text-transform:uppercase" />
+          <button class="primary" onclick="SD.joinGame()">Join game</button>
+        </div>
+      </div>
+      <p class="foot" id="connStatus"></p>
+    </div>
+  </section>
+
+  <!-- LOBBY -->
+  <section id="screen-lobby" class="screen">
+    <div class="card wide">
+      <h2>Waiting room</h2>
+      <div class="roomcode">
+        Room code: <strong id="lobbyRoom">----</strong>
+        <button class="link" onclick="SD.copyLink()">Copy invite link</button>
+      </div>
+      <div class="teams-grid" id="lobbyTeams"></div>
+      <div id="lobbyControls"></div>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section id="screen-game" class="screen">
+    <div class="card wide">
+      <div class="gamehead">
+        <div>
+          <div class="roundlabel" id="roundLabel">Round</div>
+          <div class="crisisname" id="crisisName"></div>
+        </div>
+        <div class="timerbox">
+          <div class="timer" id="timer">--</div>
+          <div class="timerhint">until forecast updates &amp; decisions lock</div>
+        </div>
+      </div>
+
+      <div class="forecast">
+        <div class="forecast-head">
+          <span>Forecast severity</span>
+          <span id="confidence" class="conf"></span>
+        </div>
+        <div class="band-track" id="bandTrack">
+          <div class="band-range" id="bandRange"></div>
+          <div class="band-point" id="bandPoint"></div>
+        </div>
+        <div class="band-scale"><span>Minor</span><span>Moderate</span><span>Severe</span></div>
+      </div>
+
+      <div class="game-cols">
+        <div class="col">
+          <h3 id="myTeamTitle">Your town</h3>
+          <div class="budgetbar"><span id="budgetLabel"></span></div>
+          <div id="actionCards" class="actioncards"></div>
+          <div class="selcost" id="selCost"></div>
+        </div>
+        <div class="col">
+          <h3>Situation board</h3>
+          <div id="board" class="board"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="screen-results" class="screen">
+    <div class="card wide">
+      <h2>Impact — the results are in</h2>
+      <div id="revealBox" class="reveal"></div>
+      <div id="scoreCards" class="teams-grid"></div>
+      <h3>The timing trade-off</h3>
+      <p class="hint">As the crisis nears, the <b>cost</b> of acting rises and the <b>effectiveness</b> of acting falls,
+        while forecast <b>confidence</b> climbs. The circles show when each town actually spent.</p>
+      <canvas id="chart" width="720" height="320"></canvas>
+      <h3>Debrief</h3>
+      <ul id="debrief" class="debrief"></ul>
+      <button class="primary" onclick="SD.playAgain()">Back to start</button>
+    </div>
+  </section>
+
+</div>
+
+<script src="https://unpkg.com/mqtt@5.10.1/dist/mqtt.min.js"></script>
+<script src="scenario.js"></script>
+<script src="engine.js"></script>
+<script src="sync.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
